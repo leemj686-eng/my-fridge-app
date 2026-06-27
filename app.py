@@ -121,12 +121,13 @@ div[data-testid="stMarkdownContainer"] {
     color: #FFFFFF !important;
 }
 
-/* 🛠️ [수정] 필수 재료와 조리 순서 텍스트 왼쪽 정렬, 폰트 적용 및 글씨 크기 14px로 한 단계 축소 */
+/* 필수 재료와 조리 순서 텍스트 왼쪽 정렬, 폰트 적용 및 글씨 크기 14px */
 .left-align-text {
     text-align: left !important;
     color: #FFFFFF !important;
     font-family: 'Gowun Dodum', sans-serif !important;
     font-size: 14px !important;
+    margin-bottom: 12px !important; /* 💡 항목 아래 여백 추가 */
 }
 
 .badge-container {
@@ -246,11 +247,15 @@ if ingredients:
         col1, col2 = st.columns(2)
         
         with col1:
+            # 🛠️ [수정] 부제목 아래에 한 줄 여백 추가
             st.subheader("📌 필수 재료")
+            st.write("")
             for ing in current['ingredients']:
                 st.markdown(f"<div class='left-align-text'>• {ing}</div>", unsafe_allow_html=True)
                 
         with col2:
+            # 🛠️ [수정] 부제목 아래에 한 줄 여백 추가
             st.subheader("🍳 조리 순서")
+            st.write("")
             for i, step in enumerate(current['steps'], 1):
                 st.markdown(f"<div class='left-align-text'><b>{i}.</b> {step}</div>", unsafe_allow_html=True)
