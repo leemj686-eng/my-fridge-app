@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 🎨 화면 테마, 폰트, 정렬 및 얼룩 제거 통합 스타일 설정
+# 🎨 화면 테마, 폰트, 정렬 및 테두리 선(Border) 추가 스타일 설정
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
@@ -18,6 +18,7 @@ st.markdown("""
 .stAppViewContainer {
     display: flex;
     justify-content: center;
+    background-color: #112512; /* 외곽 테두리 바깥쪽은 조금 더 어두운 배경으로 처리 */
 }
 
 .stApp {
@@ -27,6 +28,12 @@ st.markdown("""
     width: 100%;
     max-width: 500px;
     margin: auto;
+    
+    /* 🛠️ [추가] 최외곽 안쪽에 하얀색 얇은 테두리선 넣기 */
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 20px !important;
+    padding: 20px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .stApp h1 {
@@ -39,6 +46,28 @@ st.markdown("""
     color: #FFFFFF !important;
     font-family: 'Gowun Dodum', sans-serif !important;
     text-align: center !important;
+}
+
+/* 🛠️ [추가] 가로로 정렬된 글씨와 입력창의 높이를 완벽하게 한 줄로 맞추는 마법 */
+.row-container {
+    display: table !important;
+    width: 100% !important;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+}
+.label-box {
+    display: table-cell !important;
+    vertical-align: middle !important;
+    width: 25% !important;
+    text-align: right !important;
+    padding-right: 12px !important;
+    color: #FFFFFF !important;
+    font-size: 16px !important;
+}
+.input-box {
+    display: table-cell !important;
+    vertical-align: middle !important;
+    width: 75% !important;
 }
 
 .stTextInput input {
@@ -134,18 +163,19 @@ st.write("")
 st.title("🍳 냉장고를 부탁해!")
 st.markdown("가진 재료를 입력하시면 <br>맘에 들 때까지 레시피를 생성해 드려요.", unsafe_allow_html=True)
 
-# 두 번째 안내 문구 및 식재료 입력창 (가로 나란히 배치형)
+# 두 번째 안내 문구
 st.markdown("식재료를 쉼표(,)로 구분해서 입력하세요 <br>(예: 스팸, 계란, 파)", unsafe_allow_html=True)
 
-# 💡 가로로 칸을 나누어 왼쪽엔 글씨, 오른쪽엔 입력창을 배치합니다.
+# 🛠️ [수정 완료] HTML 마법을 결합하여 '식재료 :'와 입력칸을 완벽히 정중앙 한 줄로 배치!
+st.markdown('<div class="row-container">', unsafe_allow_html=True)
 col_label, col_input = st.columns([1, 3])
 
 with col_label:
-    # 약간의 위쪽 여백을 주어 입력창과 높이를 맞추고 볼드체 적용
-    st.markdown("<div style='margin-top: 10px;'><b>식재료 :</b></div>", unsafe_allow_html=True)
+    st.markdown("<div class='label-box'><b>식재료 :</b></div>", unsafe_allow_html=True)
 
 with col_input:
     ingredients = st.text_input("", label_visibility="collapsed")
+st.markdown('</div>', unsafe_allow_html=True)
 
 # 어플이 기억해야 할 상태 설정 (추천받은 메뉴 기록들)
 if 'history' not in st.session_state:
@@ -171,50 +201,3 @@ if ingredients:
                 "time": "조리 시간 (예: 20분)",
                 "level": "난이도 (예: ⚡ 쉬움, ⭐ 보통, 🔥 어려움)",
                 "ingredients": ["재료1 정확한 양", "재료2 정확한 양"],
-                "steps": ["1단계 설명", "2단계 설명"]
-            }}
-            """
-            
-            try:
-                response = client.models.generate_content(
-                    model='gemini-2.5-flash',
-                    contents=prompt,
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json",
-                    ),
-                )
-                
-                import json
-                recipe_data = json.loads(response.text)
-                st.session_state.current_recipe = recipe_data
-                st.session_state.history.append(recipe_data['menu'])
-                
-            except Exception as e:
-                st.error("AI와 연결 중 오류가 발생했습니다. API Key를 확인해 주세요.")
-                st.stop()
-
-    # 현재 생성된 레시피 화면에 그리기
-    if 'current_recipe' in st.session_state:
-        current = st.session_state.current_recipe
-        
-        st.markdown(f"""
-            <div class="recipe-card">
-                <h2 style="margin-top:0; text-align:center;">{current['menu']}</h2>
-                <div class="badge-container">
-                    <span class="badge-time">⏰ 조리시간: {current['time']}</span>
-                    <span class="badge-level">📊 난이도: {current['level']}</span>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.subheader("📌 필수 재료")
-            for ing in current['ingredients']:
-                st.write(f"• {ing}")
-                
-        with col2:
-            st.subheader("🍳 조리 순서")
-            for i, step in enumerate(current['steps'], 1):
-                st.write(f"**{i}.** {step}")
