@@ -13,31 +13,38 @@ st.set_page_config(
 # 💡 여기에 배경색과 글자색을 바꾸는 스타일 코드를 추가합니다!
 st.markdown("""
     <style>
-    /* 전체 배경색을 어두운 초록색(숲속 느낌의 딥그린)으로 변경 */
+    /* 🌐 구글 폰트에서 엄청 귀여운 '일기장 글씨체(Gowun Dodum)' 가져오기 */
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+    /* 전체 배경색 및 폰트 적용 */
     .stApp {
         background-color: #1E3F20;
+        font-family: 'Gowun Dodum', sans-serif !important; /* 👈 가져온 귀여운 글씨체 적용! */
     }
     
-    /* 화면의 모든 기본 글자색을 흰색으로 만들어서 어두운 배경에서 잘 보이게 설정 */
-    .stApp p, .stApp h1, .stApp h2, .stApp h3, .stApp label, .stApp span {
+    /* 화면의 모든 글자체와 글자색을 하얗고 귀엽게 */
+    .stApp p, .stApp h1, .stApp h2, .stApp h3, .stApp label, .stApp span, .stApp button {
         color: #FFFFFF !important;
+        font-family: 'Gowun Dodum', sans-serif !important;
     }
     
-    /* 입력창(텍스트 입력칸 등)의 글자색이 묻히지 않도록 스타일 조정 */
+    /* 입력창 글자 스타일 조정 */
     .stTextInput input {
-        color: #000000 !important; /* 입력하는 글자는 하얀 창에서 잘 보이게 검은색으로 */
+        color: #000000 !important;
+        font-family: 'Gowun Dodum', sans-serif !important;
     }
 
-    /* 버튼 색상을 배경보다 약간 밝은 포인트 초록색으로 변경 */
+    /* 버튼 스타일 (글씨체 포함) */
     div.stButton > button:first-child {
         background-color: #2E7D32;
         color: white !important;
         border: 1px solid #4CAF50;
         border-radius: 10px;
         font-weight: bold;
+        font-family: 'Gowun Dodum', sans-serif !important;
     }
     
-    /* 버튼에 마우스를 올렸을 때 색상 */
+    /* 버튼에 마우스 올렸을 때 */
     div.stButton > button:first-child:hover {
         background-color: #388E3C;
         color: white !important;
