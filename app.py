@@ -13,28 +13,49 @@ st.set_page_config(
 # 💡 여기에 배경색과 글자색을 바꾸는 스타일 코드를 추가합니다!
 st.markdown("""
     <style>
-    /* 🌐 구글 폰트에서 엄청 귀여운 '일기장 글씨체(Gowun Dodum)' 가져오기 */
+    /* 🌐 구글 폰트 적용 */
     @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
-    /* 전체 배경색 및 폰트 적용 */
+    /* 전체 배경색, 폰트 및 중앙 정렬 */
     .stApp {
         background-color: #1E3F20;
-        font-family: 'Gowun Dodum', sans-serif !important; /* 👈 가져온 귀여운 글씨체 적용! */
+        font-family: 'Gowun Dodum', sans-serif !important;
+        text-align: center; /* 💡 화면의 기본 텍스트들을 모두 가운데 정렬 */
     }
     
-    /* 화면의 모든 글자체와 글자색을 하얗고 귀엽게 */
-    .stApp p, .stApp h1, .stApp h2, .stApp h3, .stApp label, .stApp span, .stApp button {
+    /* 1. "냉장고를 부탁해" 타이틀 크기 줄이기 및 가운데 정렬 */
+    .stApp h1 {
+        font-size: 28px !important; /* 원래보다 살짝 줄어든 예쁜 사이즈 */
+        text-align: center !important;
+        margin-bottom: 20px;
+    }
+    
+    /* 화면의 모든 일반 글자들을 하얗고 귀엽게 + 가운데 정렬 */
+    .stApp p, .stApp h2, .stApp h3, .stApp span {
         color: #FFFFFF !important;
         font-family: 'Gowun Dodum', sans-serif !important;
+        text-align: center !important;
     }
     
-    /* 입력창 글자 스타일 조정 */
+    /* 입력창 위의 안내 글씨(Label)도 가운데로 정렬 */
+    .stApp label {
+        color: #FFFFFF !important;
+        font-family: 'Gowun Dodum', sans-serif !important;
+        display: block;
+        text-align: center !important;
+    }
+    
+    /* 입력창 글자 스타일 및 중앙 정렬 */
     .stTextInput input {
         color: #000000 !important;
         font-family: 'Gowun Dodum', sans-serif !important;
+        text-align: center !important; /* 내가 글씨를 쓸 때도 가운데서부터 써지도록 함 */
     }
 
-    /* 버튼 스타일 (글씨체 포함) */
+    /* 버튼 스타일 및 중앙 배치 */
+    div.stButton {
+        text-align: center !important;
+    }
     div.stButton > button:first-child {
         background-color: #2E7D32;
         color: white !important;
@@ -42,6 +63,7 @@ st.markdown("""
         border-radius: 10px;
         font-weight: bold;
         font-family: 'Gowun Dodum', sans-serif !important;
+        padding: 10px 20px;
     }
     
     /* 버튼에 마우스 올렸을 때 */
