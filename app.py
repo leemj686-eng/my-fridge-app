@@ -11,33 +11,44 @@ st.set_page_config(
 )
 
 # 💡 여기에 배경색과 글자색을 바꾸는 스타일 코드를 추가합니다!
-st.markdown("""
+\st.markdown("""
     <style>
     /* 🌐 구글 폰트 적용 */
     @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
-    /* 전체 배경색, 폰트 및 중앙 정렬 */
+    /* 💡 화면 전체(가장 바깥쪽 껍데기)를 세로 정렬이 가능한 구조로 변경 */
+    .stAppViewContainer {
+        display: flex;
+        align-items: center;      /* 세로 기준 정중앙 정렬 */
+        justify-content: center;   /* 가로 기준 정중앙 정렬 */
+        height: 100vh;            /* 화면 높이를 꽉 채우기 */
+    }
+
+    /* 진짜 내용물이 들어있는 상자 스타일 */
     .stApp {
         background-color: #1E3F20;
         font-family: 'Gowun Dodum', sans-serif !important;
-        text-align: center; /* 💡 화면의 기본 텍스트들을 모두 가운데 정렬 */
+        text-align: center;
+        width: 100%;
+        max-width: 500px;         /* 폰에서 너무 퍼지지 않게 크기 제한 */
+        margin: auto;             /* 자동 여백 채우기 */
     }
     
-    /* 1. "냉장고를 부탁해" 타이틀 크기 줄이기 및 가운데 정렬 */
+    /* 1. "냉장고를 부탁해" 타이틀 크기 및 정렬 */
     .stApp h1 {
-        font-size: 28px !important; /* 원래보다 살짝 줄어든 예쁜 사이즈 */
+        font-size: 28px !important;
         text-align: center !important;
         margin-bottom: 20px;
     }
     
-    /* 화면의 모든 일반 글자들을 하얗고 귀엽게 + 가운데 정렬 */
+    /* 모든 일반 글자 스타일 및 가운데 정렬 */
     .stApp p, .stApp h2, .stApp h3, .stApp span {
         color: #FFFFFF !important;
         font-family: 'Gowun Dodum', sans-serif !important;
         text-align: center !important;
     }
     
-    /* 입력창 위의 안내 글씨(Label)도 가운데로 정렬 */
+    /* 입력창 위의 안내 글씨 정렬 */
     .stApp label {
         color: #FFFFFF !important;
         font-family: 'Gowun Dodum', sans-serif !important;
@@ -49,7 +60,7 @@ st.markdown("""
     .stTextInput input {
         color: #000000 !important;
         font-family: 'Gowun Dodum', sans-serif !important;
-        text-align: center !important; /* 내가 글씨를 쓸 때도 가운데서부터 써지도록 함 */
+        text-align: center !important;
     }
 
     /* 버튼 스타일 및 중앙 배치 */
@@ -66,7 +77,6 @@ st.markdown("""
         padding: 10px 20px;
     }
     
-    /* 버튼에 마우스 올렸을 때 */
     div.stButton > button:first-child:hover {
         background-color: #388E3C;
         color: white !important;
