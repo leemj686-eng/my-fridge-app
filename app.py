@@ -183,7 +183,7 @@ if 'history' not in st.session_state:
 if ingredients:
     if st.button("맘에 안 들어요, 다른 메뉴 볼래요!", use_container_width=True) or not st.session_state.history:
         
-        with st.spinner("냉장고 재료로 새로운 레시피를 고민하고 있습니다... 🧠"):
+        with st.spinner("냉장고 재료로 레시피를 고민하고 있습니다... 🧠"):
             past_menus = ", ".join(st.session_state.history) if st.session_state.history else "없음"
             
             prompt = f"""사용자의 냉장고 재료: {ingredients}
