@@ -134,9 +134,18 @@ st.write("")
 st.title("🍳 냉장고를 부탁해!")
 st.markdown("가진 재료를 입력하시면 <br>맘에 들 때까지 레시피를 생성해 드려요.", unsafe_allow_html=True)
 
-# 두 번째 안내 문구 및 식재료 입력창 (완벽 분리형)
+# 두 번째 안내 문구 및 식재료 입력창 (가로 나란히 배치형)
 st.markdown("식재료를 쉼표(,)로 구분해서 입력하세요 <br>(예: 스팸, 계란, 파)", unsafe_allow_html=True)
-ingredients = st.text_input("", label_visibility="collapsed")
+
+# 💡 가로로 칸을 나누어 왼쪽엔 글씨, 오른쪽엔 입력창을 배치합니다.
+col_label, col_input = st.columns([1, 3])
+
+with col_label:
+    # 약간의 위쪽 여백을 주어 입력창과 높이를 맞추고 볼드체 적용
+    st.markdown("<div style='margin-top: 10px;'><b>식재료 :</b></div>", unsafe_allow_html=True)
+
+with col_input:
+    ingredients = st.text_input("", label_visibility="collapsed")
 
 # 어플이 기억해야 할 상태 설정 (추천받은 메뉴 기록들)
 if 'history' not in st.session_state:
