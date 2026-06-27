@@ -13,15 +13,34 @@ st.set_page_config(
 # 💡 여기에 배경색과 글자색을 바꾸는 스타일 코드를 추가합니다!
 st.markdown("""
     <style>
-    /* 전체 배경색을 귀여운 연한 노란색/크림색으로 변경 */
+    /* 전체 배경색을 어두운 초록색(숲속 느낌의 딥그린)으로 변경 */
     .stApp {
-        background-color: #FFFDF0;
+        background-color: #1E3F20;
     }
-    /* 버튼 색상을 예쁜 주황색으로 변경 */
+    
+    /* 화면의 모든 기본 글자색을 흰색으로 만들어서 어두운 배경에서 잘 보이게 설정 */
+    .stApp p, .stApp h1, .stApp h2, .stApp h3, .stApp label, .stApp span {
+        color: #FFFFFF !important;
+    }
+    
+    /* 입력창(텍스트 입력칸 등)의 글자색이 묻히지 않도록 스타일 조정 */
+    .stTextInput input {
+        color: #000000 !important; /* 입력하는 글자는 하얀 창에서 잘 보이게 검은색으로 */
+    }
+
+    /* 버튼 색상을 배경보다 약간 밝은 포인트 초록색으로 변경 */
     div.stButton > button:first-child {
-        background-color: #FF9F43;
-        color: white;
+        background-color: #2E7D32;
+        color: white !important;
+        border: 1px solid #4CAF50;
         border-radius: 10px;
+        font-weight: bold;
+    }
+    
+    /* 버튼에 마우스를 올렸을 때 색상 */
+    div.stButton > button:first-child:hover {
+        background-color: #388E3C;
+        color: white !important;
     }
     </style>
     """, unsafe_allow_html=True)
