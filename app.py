@@ -201,3 +201,50 @@ if ingredients:
                 "time": "조리 시간 (예: 20분)",
                 "level": "난이도 (예: ⚡ 쉬움, ⭐ 보통, 🔥 어려움)",
                 "ingredients": ["재료1 정확한 양", "재료2 정확한 양"],
+                "steps": ["1단계 설명", "2단계 설명"]
+            }}
+            """
+            
+            try:
+                response = client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                    ),
+                )
+                
+                import json
+                recipe_data = json.loads(response.text)
+                st.session_state.current_recipe = recipe_data
+                st.session_state.history.append(recipe_data['menu'])
+                
+            except Exception as e:
+                st.error("AI와 연결 중 오류가 발생했습니다. API Key를 확인해 주세요.")
+                st.stop()
+
+    # 현재 생성된 레시피 화면에 그리기
+    if 'current_recipe' in st.session_state:
+        current = st.session_state.current_recipe
+        
+        st.markdown(f"""
+            <div class="recipe-card">
+                <h2 style="margin-top:0; text-align:center;">{current['menu']}</h2>
+                <div class="badge-container">
+                    <span class="badge-time">⏰ 조리시간: {current['time']}</span>
+                    <span class="badge-level">📊 난이도: {current['level']}</span>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.subheader("📌 필수 재료")
+            for ing in current['ingredients']:
+                st.write(f"• {ing}")
+                
+        with col2:
+            st.subheader("🍳 조리 순서")
+            for i, step in enumerate(current['steps'], 1):
+                st.write(f"**{i}.** {step}")
