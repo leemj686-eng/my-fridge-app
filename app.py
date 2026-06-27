@@ -10,18 +10,16 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 💡 여기에 배경색과 글자색을 바꾸는 스타일 코드를 추가합니다!
+# 🎨 화면 테마, 폰트, 정렬 및 결과창 가시성 개선을 위한 통합 스타일 설정
 st.markdown("""
     <style>
     /* 🌐 구글 폰트 적용 */
     @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
-    /* 💡 화면 전체(가장 바깥쪽 껍데기)를 세로 정렬이 가능한 구조로 변경 */
+    /* 💡 화면 전체(가장 바깥쪽 껍데기)를 가로 정렬이 가능한 구조로 변경 */
     .stAppViewContainer {
         display: flex;
-        align-items: center;      /* 세로 기준 정중앙 정렬 */
         justify-content: center;   /* 가로 기준 정중앙 정렬 */
-        height: 100vh;            /* 화면 높이를 꽉 채우기 */
     }
 
     /* 진짜 내용물이 들어있는 상자 스타일 */
@@ -41,7 +39,7 @@ st.markdown("""
         margin-bottom: 20px;
     }
     
-    /* 모든 일반 글자 스타일 및 가운데 정렬 */
+    /* 화면의 모든 기본 안내 글자 스타일 및 가운데 정렬 */
     .stApp p, .stApp h2, .stApp h3, .stApp span {
         color: #FFFFFF !important;
         font-family: 'Gowun Dodum', sans-serif !important;
@@ -56,10 +54,10 @@ st.markdown("""
         text-align: center !important;
     }
     
-/* 🛠️ 입력창 글자색 흰색으로, 배경도 약간 어둡게 수정 */
+    /* 🛠️ 입력창 내부 배경 어둡게 + 글자색 흰색으로 전면 수정 완료! */
     .stTextInput input {
         background-color: #153017 !important; /* 입력창 배경색 */
-        color: #FFFFFF !important;            /* 💡 글자색을 흰색으로! */
+        color: #FFFFFF !important;            /* 💡 입력 글자색을 흰색으로! */
         font-family: 'Gowun Dodum', sans-serif !important;
         text-align: center !important;
         border: 1px solid #4CAF50 !important;
@@ -83,11 +81,24 @@ st.markdown("""
         background-color: #388E3C;
         color: white !important;
     }
+
+    /* 🛠️ AI가 출력하는 결과창 영역 글자색 및 투명 배경 처리 완료! */
+    .stMarkdown div, .stMarkdown p, .stMarkdown li, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+        color: #FFFFFF !important; /* 생성된 텍스트 결과 모두 흰색 처리 */
+        font-family: 'Gowun Dodum', sans-serif !important;
+    }
+    
+    /* 레시피가 렌더링되는 스트림릿 마크다운 컨테이너에 살짝 어두운 배경을 깔아 글씨 강조 */
+    div[data-testid="stMarkdownContainer"] {
+        color: #FFFFFF !important;
+        background-color: rgba(0, 0, 0, 0.25) !important;
+        padding: 15px;
+        border-radius: 10px;
+    }
     </style>
     """, unsafe_allow_html=True)
 
 # [필수] 구글 제미나이 통행증(API Key) 설정
-# 아래 따옴표 안에 발급받으신 API Key를 꼭 다시 넣어주세요!
 GEMINI_API_KEY = "AQ.Ab8RN6IzRT_BMlo367SUF56K1JpncpDTI_NBSTlOAIlXg0jPvw"
 
 # 제미나이 클라이언트 프로그램 초기화
@@ -97,34 +108,39 @@ def get_ai_client():
 
 client = get_ai_client()
 
-# 예쁜 카드 레이아웃 스타일 설정 (CSS)
+# 예쁜 카드 레이아웃 스타일 설정 (CSS) - 배경과 글자색 매칭 개선
 st.markdown("""
     <style>
     .recipe-card {
-        background-color: #ffffff;
+        background-color: #153017; /* 초록색 메인 테마와 일치하도록 수정 */
         padding: 25px;
         border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         border-left: 6px solid #4CAF50;
         margin-top: 20px;
         margin-bottom: 20px;
+    }
+    /* 카드 내 요리 제목 색상 강제 흰색 지정 */
+    .recipe-card h2 {
+        color: #FFFFFF !important;
     }
     .badge-container {
         display: flex;
         gap: 10px;
         margin-bottom: 15px;
+        justify-content: center;
     }
     .badge-time {
-        background-color: #E8F5E9;
-        color: #2E7D32;
+        background-color: #2E7D32;
+        color: #FFFFFF !important;
         padding: 5px 12px;
         border-radius: 20px;
         font-weight: bold;
         font-size: 14px;
     }
     .badge-level {
-        background-color: #FFF3E0;
-        color: #E65100;
+        background-color: #E65100;
+        color: #FFFFFF !important;
         padding: 5px 12px;
         border-radius: 20px;
         font-weight: bold;
@@ -133,9 +149,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# [수정 완료] 깔끔하게 다듬은 어플 타이틀과 안내 문구
+# 💡 안전하게 가로 세로 여백을 다듬기 위한 상단 공백 추가
+st.write("")
+st.write("")
+
+# [수정 완료] 깔끔하게 다듬은 어플 타이틀과 안내 문구 (\n으로 줄바꿈 완성!)
 st.title("🍳 냉장고를 부탁해!")
-st.write("가진 재료를 입력하시면 레시피를 생성해 드려요.")
+st.write("가진 재료를 입력하시면 맘에 들 때까지 \n실시간으로 레시피를 생성해 드려요.")
 
 # 2. 식재료 입력받기
 ingredients = st.text_input("식재료를 쉼표(,)로 구분해서 입력하세요 (예: 스팸, 계란, 파)")
@@ -197,7 +217,7 @@ if ingredients:
         # 예쁜 카드 레이아웃
         st.markdown(f"""
             <div class="recipe-card">
-                <h2 style="margin-top:0; color:#1E293B;">{current['menu']}</h2>
+                <h2 style="margin-top:0; text-align:center;">{current['menu']}</h2>
                 <div class="badge-container">
                     <span class="badge-time">⏰ 조리시간: {current['time']}</span>
                     <span class="badge-level">📊 난이도: {current['level']}</span>
