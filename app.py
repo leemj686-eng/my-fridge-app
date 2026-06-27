@@ -46,14 +46,14 @@ st.markdown("""
     text-align: center !important;
 }
 
-/* 🛠️ [강력 수정] 글씨와 입력창을 무조건 한 줄로 가로 정렬하는 절대 마법 */
+/* 글씨와 입력창을 무조건 한 줄로 가로 정렬하는 절대 마법 */
 .flex-row-container {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     justify-content: center !important;
     width: 100% !important;
-    gap: 10px !important; /* 글씨와 입력창 사이의 간격 */
+    gap: 10px !important;
     margin-top: 15px !important;
     margin-bottom: 15px !important;
 }
@@ -63,7 +63,7 @@ st.markdown("""
     color: #FFFFFF !important;
     font-size: 16px !important;
     font-weight: bold !important;
-    white-space: nowrap !important; /* 💡 절대로 두 줄로 안 나뉘게 막음 */
+    white-space: nowrap !important;
 }
 
 /* 입력창 전체 감싸는 통을 한 줄 안에서 꽉 채우기 */
@@ -167,7 +167,7 @@ st.markdown("가진 재료를 입력하시면 <br>맘에 들 때까지 레시피
 # 두 번째 안내 문구
 st.markdown("식재료를 쉼표(,)로 구분해서 입력하세요 <br>(예: 스팸, 계란, 파)", unsafe_allow_html=True)
 
-# 🛠️ [완전 해결] 하나의 큰 틀(flex-row-container) 안에 글씨와 입력창을 순서대로 가두기!
+# 하나의 큰 틀(flex-row-container) 안에 글씨와 입력창을 순서대로 가두기!
 st.markdown('<div class="flex-row-container">', unsafe_allow_html=True)
 st.markdown('<div class="fixed-label">식재료 :</div>', unsafe_allow_html=True)
 st.markdown('<div class="fixed-input-wrapper">', unsafe_allow_html=True)
@@ -186,13 +186,62 @@ if ingredients:
         with st.spinner("냉장고 재료로 새로운 레시피를 고민하고 있습니다... 🧠"):
             past_menus = ", ".join(st.session_state.history) if st.session_state.history else "없음"
             
-            prompt = f"""
-            사용자의 냉장고 재료: {ingredients}
-            이전 추천 메뉴 목록: {past_menus}
-            
-            위 재료를 활용해서 만들 수 있는 맛있는 요리를 딱 1개만 추천해줘. 
-            단, 이전 추천 메뉴 목록에 있는 요리와는 무조건 다른 새로운 요리여야 해.
-            반드시 아래의 JSON 형식을 정확히 지켜서 한국어로 답변해줘. 다른 설명은 하지마.
+            # 🛠️ 에러가 났던 따옴표와 프롬프트 영역의 들여쓰기를 정형화했습니다.
+            prompt = f"""사용자의 냉장고 재료: {ingredients}
+이전 추천 메뉴 목록: {past_menus}
 
-            {{
-                "menu": "요리 이름 (이
+위 재료를 활용해서 만들 수 있는 맛있는 요리를 딱 1개만 추천해줘. 
+단, 이전 추천 메뉴 목록에 있는 요리와는 무조건 다른 새로운 요리여야 해.
+반드시 아래의 JSON 형식을 정확히 지켜서 한국어로 답변해줘. 다른 설명은 하지마.
+
+{{
+    "menu": "요리 이름 (이쁜 이모지 포함)",
+    "time": "조리 시간 (예: 20분)",
+    "level": "난이도 (예: ⚡ 쉬움, ⭐ 보통, 🔥 어려움)",
+    "ingredients": ["재료1 정확한 양", "재료2 정확한 양"],
+    "steps": ["1단계 설명", "2단계 설명"]
+}}"""
+            
+            try:
+                response = client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                    ),
+                )
+                
+                import json
+                recipe_data = json.loads(response.text)
+                st.session_state.current_recipe = recipe_data
+                st.session_state.history.append(recipe_data['menu'])
+                
+            except Exception as e:
+                st.error("AI와 연결 중 오류가 발생했습니다. API Key를 확인해 주세요.")
+                st.stop()
+
+    # 현재 생성된 레시피 화면에 그리기
+    if 'current_recipe' in st.session_state:
+        current = st.session_state.current_recipe
+        
+        st.markdown(f"""
+            <div class="recipe-card">
+                <h2 style="margin-top:0; text-align:center;">{current['menu']}</h2>
+                <div class="badge-container">
+                    <span class="badge-time">⏰ 조리시간: {current['time']}</span>
+                    <span class="badge-level">📊 난이도: {current['level']}</span>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.subheader("📌 필수 재료")
+            for ing in current['ingredients']:
+                st.write(f"• {ing}")
+                
+        with col2:
+            st.subheader("🍳 조리 순서")
+            for i, step in enumerate(current['steps'], 1):
+                st.write(f"**{i}.** {step}")
