@@ -56,11 +56,13 @@ st.markdown("""
         text-align: center !important;
     }
     
-    /* 입력창 글자 스타일 및 중앙 정렬 */
+/* 🛠️ 입력창 글자색 흰색으로, 배경도 약간 어둡게 수정 */
     .stTextInput input {
-        color: #000000 !important;
+        background-color: #153017 !important; /* 입력창 배경색 */
+        color: #FFFFFF !important;            /* 💡 글자색을 흰색으로! */
         font-family: 'Gowun Dodum', sans-serif !important;
         text-align: center !important;
+        border: 1px solid #4CAF50 !important;
     }
 
     /* 버튼 스타일 및 중앙 배치 */
