@@ -121,11 +121,12 @@ div[data-testid="stMarkdownContainer"] {
     color: #FFFFFF !important;
 }
 
-/* 필수 재료와 조리 순서 텍스트를 강제로 왼쪽 정렬 및 앱 전체 폰트 적용 */
+/* 🛠️ [수정] 필수 재료와 조리 순서 텍스트 왼쪽 정렬, 폰트 적용 및 글씨 크기 14px로 한 단계 축소 */
 .left-align-text {
     text-align: left !important;
     color: #FFFFFF !important;
     font-family: 'Gowun Dodum', sans-serif !important;
+    font-size: 14px !important;
 }
 
 .badge-container {
