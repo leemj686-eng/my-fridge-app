@@ -10,64 +10,111 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 🎨 화면 테마, 폰트, 정렬 및 결과창 가시성 개선을 위한 통합 스타일 설정
+# 🎨 화면 테마, 폰트, 정렬 및 얼룩 제거 통합 스타일 설정
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
-    .stApp {
-        background-color: #1E3F20;
-        font-family: 'Gowun Dodum', sans-serif !important;
-        text-align: center;
-    }
-    
-    .stApp h1 {
-        font-size: 28px !important;
-        text-align: center !important;
-        margin-bottom: 20px;
-    }
-    
-    .stApp p, .stApp h2, .stApp h3, .stApp span, .stApp label {
-        color: #FFFFFF !important;
-        font-family: 'Gowun Dodum', sans-serif !important;
-        text-align: center !important;
-    }
-    
-    /* 입력창 스타일 */
-    .stTextInput input {
-        background-color: #153017 !important; 
-        color: #FFFFFF !important;            
-        font-family: 'Gowun Dodum', sans-serif !important;
-        text-align: center !important;
-        border: 1px solid #4CAF50 !important; 
-    }
+.stAppViewContainer {
+    display: flex;
+    justify-content: center;
+}
 
-    /* 버튼 스타일 */
-    div.stButton {
-        text-align: center !important;
-    }
-    div.stButton > button:first-child {
-        background-color: #2E7D32;
-        color: white !important;
-        border: 1px solid #4CAF50;
-        border-radius: 10px;
-        font-weight: bold;
-        font-family: 'Gowun Dodum', sans-serif !important;
-        padding: 10px 20px;
-    }
-    
-    div.stButton > button:first-child:hover {
-        background-color: #388E3C;
-        color: white !important;
-    }
+.stApp {
+    background-color: #1E3F20;
+    font-family: 'Gowun Dodum', sans-serif !important;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+}
 
-    /* 🛠️ 메인 화면의 글자 박스 배경을 전부 투명하게 강제 고정 (얼룩 제거 마법!) */
-    div[data-testid="stMarkdownContainer"] {
-        background-color: transparent !important;
-        box-shadow: none !important;
-        padding: 0px !important;
-    }
-    </style>
+.stApp h1 {
+    font-size: 28px !important;
+    text-align: center !important;
+    margin-bottom: 20px;
+}
+
+.stApp p, .stApp h2, .stApp h3, .stApp span, .stApp label {
+    color: #FFFFFF !important;
+    font-family: 'Gowun Dodum', sans-serif !important;
+    text-align: center !important;
+}
+
+.stTextInput input {
+    background-color: #153017 !important;
+    color: #FFFFFF !important;
+    font-family: 'Gowun Dodum', sans-serif !important;
+    text-align: center !important;
+    border: 1px solid #4CAF50 !important;
+}
+
+div.stButton {
+    text-align: center !important;
+}
+
+div.stButton > button:first-child {
+    background-color: #2E7D32;
+    color: white !important;
+    border: 1px solid #4CAF50;
+    border-radius: 10px;
+    font-weight: bold;
+    font-family: 'Gowun Dodum', sans-serif !important;
+    padding: 10px 20px;
+}
+
+div.stButton > button:first-child:hover {
+    background-color: #388E3C;
+    color: white !important;
+}
+
+/* 메인 화면 글자 상자들의 얼룩덜룩한 배경 투명하게 제거 */
+div[data-testid="stMarkdownContainer"] {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 0px !important;
+}
+
+/* AI 레시피 결과가 들어갈 카드 레이아웃 */
+.recipe-card {
+    background-color: #153017 !important;
+    padding: 25px !important;
+    border-radius: 15px !important;
+    border-left: 6px solid #4CAF50 !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+.recipe-card h2 {
+    color: #FFFFFF !important;
+}
+
+.badge-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.badge-time {
+    background-color: #2E7D32 !important;
+    color: #FFFFFF !important;
+    padding: 5px 12px !important;
+    border-radius: 20px !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+}
+
+.badge-level {
+    background-color: #E65100 !important;
+    color: #FFFFFF !important;
+    padding: 5px 12px !important;
+    border-radius: 20px !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # [필수] 구글 제미나이 통행증(API Key) 설정
 GEMINI_API_KEY = "AQ.Ab8RN6IzRT_BMlo367SUF56K1JpncpDTI_NBSTlOAIlXg0jPvw"
@@ -79,56 +126,15 @@ def get_ai_client():
 
 client = get_ai_client()
 
-# 예쁜 카드 레이아웃 스타일 설정 (CSS) - 배경과 글자색 매칭 개선
-st.markdown("""
-    <style>
-    .recipe-card {
-        background-color: #153017; /* 초록색 메인 테마와 일치하도록 수정 */
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        border-left: 6px solid #4CAF50;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-    /* 카드 내 요리 제목 색상 강제 흰색 지정 */
-    .recipe-card h2 {
-        color: #FFFFFF !important;
-    }
-    .badge-container {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 15px;
-        justify-content: center;
-    }
-    .badge-time {
-        background-color: #2E7D32;
-        color: #FFFFFF !important;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-weight: bold;
-        font-size: 14px;
-    }
-    .badge-level {
-        background-color: #E65100;
-        color: #FFFFFF !important;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-weight: bold;
-        font-size: 14px;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# 💡 안전하게 가로 세로 여백을 다듬기 위한 상단 공백 추가
+# 화면 상단 여백 확보
 st.write("")
 st.write("")
 
-# [수정 완료] 깔끔하게 다듬은 어플 타이틀과 안내 문구 (\n으로 줄바꿈 완성!)
+# 타이틀 및 첫 번째 안내 문구 (줄바꿈 반영)
 st.title("🍳 냉장고를 부탁해!")
-st.write("가진 재료를 입력하시면 레시피를 생성해 드려요.")
+st.markdown("가진 재료를 입력하시면 맘에 들 때까지 <br>실시간으로 레시피를 생성해 드려요.", unsafe_allow_html=True)
 
-# 2. 식재료 입력받기 (안내 글씨와 입력칸을 완벽히 분리!)
+# 두 번째 안내 문구 및 식재료 입력창 (완벽 분리형)
 st.markdown("식재료를 쉼표(,)로 구분해서 입력하세요 <br>(예: 스팸, 계란, 파)", unsafe_allow_html=True)
 ingredients = st.text_input("", label_visibility="collapsed")
 
@@ -138,11 +144,9 @@ if 'history' not in st.session_state:
 
 # 3. 식재료를 입력했을 때 작동
 if ingredients:
-    # '다른 메뉴 보기' 버튼을 누르거나 처음 입력했을 때 AI에게 요청
     if st.button("맘에 안 들어요, 다른 메뉴 볼래요!", use_container_width=True) or not st.session_state.history:
         
         with st.spinner("냉장고 재료로 새로운 레시피를 고민하고 있습니다... 🧠"):
-            # 기존에 추천했던 메뉴들과 겹치지 않게 하기 위한 프롬프트 작성
             past_menus = ", ".join(st.session_state.history) if st.session_state.history else "없음"
             
             prompt = f"""
@@ -163,7 +167,6 @@ if ingredients:
             """
             
             try:
-                # Gemini 2.5 Flash 모델에게 요청
                 response = client.models.generate_content(
                     model='gemini-2.5-flash',
                     contents=prompt,
@@ -172,7 +175,6 @@ if ingredients:
                     ),
                 )
                 
-                # AI가 준 정답을 파이썬 데이터로 변환해서 저장
                 import json
                 recipe_data = json.loads(response.text)
                 st.session_state.current_recipe = recipe_data
@@ -186,7 +188,6 @@ if ingredients:
     if 'current_recipe' in st.session_state:
         current = st.session_state.current_recipe
         
-        # 예쁜 카드 레이아웃
         st.markdown(f"""
             <div class="recipe-card">
                 <h2 style="margin-top:0; text-align:center;">{current['menu']}</h2>
