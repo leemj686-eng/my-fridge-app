@@ -94,7 +94,7 @@ st.markdown("""
 
 # [수정 완료] 깔끔하게 다듬은 어플 타이틀과 안내 문구
 st.title("🍳 냉장고를 부탁해!")
-st.write("가진 재료를 입력하시면 맘에 들 때까지 실시간으로 레시피를 생성해 드려요.")
+st.write("가진 재료를 입력하시면 '/맘에 들 때까지 실시간으로 레시피를 생성해 드려요.")
 
 # 2. 식재료 입력받기
 ingredients = st.text_input("식재료를 쉼표(,)로 구분해서 입력하세요 (예: 스팸, 계란, 파)")
@@ -106,9 +106,9 @@ if 'history' not in st.session_state:
 # 3. 식재료를 입력했을 때 작동
 if ingredients:
     # '다른 메뉴 보기' 버튼을 누르거나 처음 입력했을 때 AI에게 요청
-    if st.button("맘에 안 들어요, 다른 메뉴 볼래요! 🔄", use_container_width=True) or not st.session_state.history:
+    if st.button("맘에 안 들어요, 다른 메뉴 볼래요!", use_container_width=True) or not st.session_state.history:
         
-        with st.spinner("AI가 냉장고 재료로 새로운 레시피를 고민하고 있습니다... 🧠"):
+        with st.spinner("냉장고 재료로 새로운 레시피를 고민하고 있습니다... 🧠"):
             # 기존에 추천했던 메뉴들과 겹치지 않게 하기 위한 프롬프트 작성
             past_menus = ", ".join(st.session_state.history) if st.session_state.history else "없음"
             
