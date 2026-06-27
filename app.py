@@ -12,58 +12,37 @@ st.set_page_config(
 
 # 🎨 화면 테마, 폰트, 정렬 및 결과창 가시성 개선을 위한 통합 스타일 설정
 st.markdown("""
-    <style>
-    /* 🌐 구글 폰트 적용 */
+<style>
     @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
-    /* 💡 화면 전체(가장 바깥쪽 껍데기)를 가로 정렬이 가능한 구조로 변경 */
-    .stAppViewContainer {
-        display: flex;
-        justify-content: center;   /* 가로 기준 정중앙 정렬 */
-    }
-
-    /* 진짜 내용물이 들어있는 상자 스타일 */
     .stApp {
         background-color: #1E3F20;
         font-family: 'Gowun Dodum', sans-serif !important;
         text-align: center;
-        width: 100%;
-        max-width: 500px;         /* 폰에서 너무 퍼지지 않게 크기 제한 */
-        margin: auto;             /* 자동 여백 채우기 */
     }
     
-    /* 1. "냉장고를 부탁해" 타이틀 크기 및 정렬 */
     .stApp h1 {
         font-size: 28px !important;
         text-align: center !important;
         margin-bottom: 20px;
     }
     
-    /* 화면의 모든 기본 안내 글자 스타일 및 가운데 정렬 */
-    .stApp p, .stApp h2, .stApp h3, .stApp span {
+    .stApp p, .stApp h2, .stApp h3, .stApp span, .stApp label {
         color: #FFFFFF !important;
         font-family: 'Gowun Dodum', sans-serif !important;
         text-align: center !important;
     }
     
-    /* 입력창 위의 안내 글씨 정렬 */
-    .stApp label {
-        color: #FFFFFF !important;
-        font-family: 'Gowun Dodum', sans-serif !important;
-        display: block;
-        text-align: center !important;
-    }
-    
-    /* 🛠️ 입력창 내부 배경 어둡게 + 글자색 흰색으로 전면 수정 완료! */
+    /* 입력창 스타일 */
     .stTextInput input {
-        background-color: #153017 !important; /* 입력창 배경색 */
-        color: #FFFFFF !important;            /* 💡 입력 글자색을 흰색으로! */
+        background-color: #153017 !important; 
+        color: #FFFFFF !important;            
         font-family: 'Gowun Dodum', sans-serif !important;
         text-align: center !important;
-        border: 1px solid #4CAF50 !important;
+        border: 1px solid #4CAF50 !important; 
     }
 
-    /* 버튼 스타일 및 중앙 배치 */
+    /* 버튼 스타일 */
     div.stButton {
         text-align: center !important;
     }
@@ -82,21 +61,13 @@ st.markdown("""
         color: white !important;
     }
 
-    /* 🛠️ AI가 출력하는 결과창 영역 글자색 및 투명 배경 처리 완료! */
-    .stMarkdown div, .stMarkdown p, .stMarkdown li, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-        color: #FFFFFF !important; /* 생성된 텍스트 결과 모두 흰색 처리 */
-        font-family: 'Gowun Dodum', sans-serif !important;
-    }
-    
-    /* 레시피가 렌더링되는 스트림릿 마크다운 컨테이너에 살짝 어두운 배경을 깔아 글씨 강조 */
+    /* 🛠️ 메인 화면의 글자 박스 배경을 전부 투명하게 강제 고정 (얼룩 제거 마법!) */
     div[data-testid="stMarkdownContainer"] {
-        color: #FFFFFF !important;
-        background-color: rgba(0, 0, 0, 0.25) !important;
-        padding: 15px;
-        border-radius: 10px;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        padding: 0px !important;
     }
     </style>
-    """, unsafe_allow_html=True)
 
 # [필수] 구글 제미나이 통행증(API Key) 설정
 GEMINI_API_KEY = "AQ.Ab8RN6IzRT_BMlo367SUF56K1JpncpDTI_NBSTlOAIlXg0jPvw"
