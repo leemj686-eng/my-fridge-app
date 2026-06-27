@@ -162,10 +162,10 @@ st.write("")
 
 # 타이틀 및 첫 번째 안내 문구 (줄바꿈 반영)
 st.title("🍳 냉장고를 부탁해!")
-st.markdown("가진 재료를 입력하시면 <br>맘에 들 때까지 레시피를 생성해 드려요.<br>", unsafe_allow_html=True)
+st.markdown("가진 재료를 입력하시면 <br>맘에 들 때까지 레시피를 생성해 드려요<br>", unsafe_allow_html=True)
 
 # 두 번째 안내 문구
-st.markdown("식재료를 쉼표(,)로 구분해서 입력하세요 <br>(예: 스팸, 계란, 파)", unsafe_allow_html=True)
+st.markdown("식재료를 쉼표(,)로 구분해서 입력해주세요 <br>(예: 스팸, 계란, 파)", unsafe_allow_html=True)
 
 # 하나의 큰 틀(flex-row-container) 안에 글씨와 입력창을 순서대로 가두기!
 st.markdown('<div class="flex-row-container">', unsafe_allow_html=True)
