@@ -157,9 +157,6 @@ div[data-testid="stMarkdownContainer"] {
 </style>
 """, unsafe_allow_html=True)
 
-# [필수] 구글 제미나이 통행증(API Key) 설정
-GEMINI_API_KEY = "AQ.Ab8RN6IzRT_BMlo367SUF56K1JpncpDTI_NBSTlOAIlXg0jPvw"
-
 # 제미나이 클라이언트 프로그램 초기화
 @st.cache_resource
 def get_ai_client():
