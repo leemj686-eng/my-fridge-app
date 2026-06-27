@@ -157,8 +157,9 @@ st.write("")
 st.title("🍳 냉장고를 부탁해!")
 st.write("가진 재료를 입력하시면 레시피를 생성해 드려요.")
 
-# 2. 식재료 입력받기
-ingredients = st.text_input("식재료를 쉼표(,)로 구분해서 입력하세요 <br>(예: 스팸, 계란, 파)")
+# 2. 식재료 입력받기 (안내 글씨와 입력칸을 완벽히 분리!)
+st.markdown("식재료를 쉼표(,)로 구분해서 입력하세요 <br>(예: 스팸, 계란, 파)", unsafe_allow_html=True)
+ingredients = st.text_input("", label_visibility="collapsed")
 
 # 어플이 기억해야 할 상태 설정 (추천받은 메뉴 기록들)
 if 'history' not in st.session_state:
