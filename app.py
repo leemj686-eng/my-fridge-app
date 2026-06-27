@@ -1,5 +1,5 @@
 import streamlit as st
-import os  # 👈 1. 여기에 os 라이브러리 import를 추가합니다.
+import os
 from google import genai
 from google.genai import types
 
@@ -158,9 +158,10 @@ div[data-testid="stMarkdownContainer"] {
 </style>
 """, unsafe_allow_html=True)
 
-# 💡 2. 시크릿 키 연동 및 클라이언트 초기화
+# 💡 최신 google-genai 라이브러리 초기화 구문 적용
 try:
     os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
+    # 클라이언트 생성
     client = genai.Client()
 except Exception as e:
     st.error("스트림릿 시크릿(Secrets) 설정을 불러올 수 없습니다. Settings -> Secrets를 확인해 주세요.")
@@ -182,27 +183,29 @@ if 'history' not in st.session_state:
     st.session_state.history = []
 
 if 'last_ingredients' not in st.session_state:
-    st.last_ingredients = ""
+    st.session_state.last_ingredients = ""
 
-# 세션 상태에 'ingredients'가 없으면 빈 문자열로 초기화
 if 'ingredients' not in st.session_state:
     st.session_state.ingredients = ""
+
+if 'current_recipe' not in st.session_state:
+    st.session_state.current_recipe = None
 
 # 하나의 큰 틀(flex-row-container) 안에 글씨와 입력창을 순서대로 가두기!
 st.markdown('<div class="flex-row-container">', unsafe_allow_html=True)
 st.markdown('<div class="fixed-label">식재료 :</div>', unsafe_allow_html=True)
 st.markdown('<div class="fixed-input-wrapper">', unsafe_allow_html=True)
 
-# 입력창 생성 (값을 세션 상태로 관리하여 새로고침 시에도 유지되도록 수정)
+# 입력창 생성
 ingredients = st.text_input("", value=st.session_state.ingredients, label_visibility="collapsed")
 
 st.markdown('</div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# 💡 재료가 입력되었고, 이전과 다른 재료일 때만 동작하도록직
+# 💡 재료가 바뀌었을 때 즉시 레시피를 새로 생성하는 로직
 if ingredients and ingredients != st.session_state.last_ingredients:
     st.session_state.last_ingredients = ingredients
-    st.session_state.ingredients = ingredients  # 입력값 세션에 저장
+    st.session_state.ingredients = ingredients
     st.session_state.history = [] # 기존 추천 기록 초기화
     
     with st.spinner("냉장고 재료로 새로운 레시피를 고민하고 있습니다... 🧠"):
@@ -224,6 +227,7 @@ if ingredients and ingredients != st.session_state.last_ingredients:
 }}"""
         
         try:
+            # 💡 최신 SDK 모델 호출 방식: client.models.generate_content(...)
             response = client.models.generate_content(
                 model='gemini-2.5-flash',
                 contents=prompt,
@@ -238,11 +242,11 @@ if ingredients and ingredients != st.session_state.last_ingredients:
             st.session_state.history.append(recipe_data['menu'])
             
         except Exception as e:
-            st.error("AI와 연결 중 오류가 발생했습니다. API Key 또는 프롬프트를 확인해 주세요.")
+            st.error(f"AI 모델 호출 중 오류 발생: {e}")
             st.stop()
 
 # 엔터를 쳐서 첫 레시피가 나온 후, "다른 메뉴 보고 싶을 때" 누르는 수동 새로고침 버튼관련 로직
-if 'current_recipe' in st.session_state and st.session_state.current_recipe and st.button("맘에 안 들어요, 다른 메뉴 볼래요!", use_container_width=True):
+if st.session_state.current_recipe and st.button("맘에 안 들어요, 다른 메뉴 볼래요!", use_container_width=True):
     with st.spinner("냉장고 재료로 또 다른 새로운 레시피를 고민하고 있습니다... 🧠"):
         past_menus = ", ".join(st.session_state.history) if st.session_state.history else "없음"
         
@@ -262,6 +266,7 @@ if 'current_recipe' in st.session_state and st.session_state.current_recipe and 
 }}"""
         
         try:
+            # 💡 최신 SDK 모델 호출 방식
             response = client.models.generate_content(
                 model='gemini-2.5-flash',
                 contents=prompt,
@@ -276,11 +281,11 @@ if 'current_recipe' in st.session_state and st.session_state.current_recipe and 
             st.session_state.history.append(recipe_data['menu'])
             
         except Exception as e:
-            st.error("AI와 연결 중 오류가 발생했습니다. API Key 또는 프롬프트를 확인해 주세요.")
+            st.error(f"AI 모델 호출 중 오류 발생: {e}")
             st.stop()
 
 # 현재 생성된 레시피 화면에 그리기
-if 'current_recipe' in st.session_state and st.session_state.current_recipe:
+if st.session_state.current_recipe:
     current = st.session_state.current_recipe
     
     st.markdown(f"""
