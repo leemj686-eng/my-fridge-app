@@ -115,7 +115,15 @@ div[data-testid="stMarkdownContainer"] {
     margin-bottom: 20px !important;
 }
 
+/* 🛠️ [수정] 한 줄에 다 표시되도록 요리 이름의 글자 크기를 22px로 축소 */
 .recipe-card h2 {
+    font-size: 22px !important;
+    color: #FFFFFF !important;
+}
+
+/* 🛠️ [추가] 필수 재료와 조리 순서 텍스트를 강제로 왼쪽 정렬하는 스타일 클래스 */
+.left-align-text {
+    text-align: left !important;
     color: #FFFFFF !important;
 }
 
@@ -237,10 +245,12 @@ if ingredients:
         
         with col1:
             st.subheader("📌 필수 재료")
+            # 🛠️ [수정] 필수 재료 목록을 HTML div를 써서 왼쪽 정렬로 출력
             for ing in current['ingredients']:
-                st.write(f"• {ing}")
+                st.markdown(f"<div class='left-align-text'>• {ing}</div>", unsafe_allow_html=True)
                 
         with col2:
             st.subheader("🍳 조리 순서")
+            # 🛠️ [수정] 조리 순서 단계들을 HTML div를 써서 왼쪽 정렬로 출력
             for i, step in enumerate(current['steps'], 1):
-                st.write(f"**{i}.** {step}")
+                st.markdown(f"<div class='left-align-text'><b>{i}.</b> {step}</div>", unsafe_allow_html=True)
