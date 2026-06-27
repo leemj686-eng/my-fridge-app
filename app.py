@@ -3,7 +3,28 @@ from google import genai
 from google.genai import types
 
 # 1. 어플 기본 설정
-st.set_page_config(page_title="냉장고를 부탁해", page_icon="🍳", layout="centered")
+st.set_page_config(
+    page_title="냉장고를 부탁해",
+    page_icon="🍳",
+    layout="centered",
+    initial_sidebar_state="collapsed"
+)
+
+# 💡 여기에 배경색과 글자색을 바꾸는 스타일 코드를 추가합니다!
+st.markdown("""
+    <style>
+    /* 전체 배경색을 귀여운 연한 노란색/크림색으로 변경 */
+    .stApp {
+        background-color: #FFFDF0;
+    }
+    /* 버튼 색상을 예쁜 주황색으로 변경 */
+    div.stButton > button:first-child {
+        background-color: #FF9F43;
+        color: white;
+        border-radius: 10px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # [필수] 구글 제미나이 통행증(API Key) 설정
 # 아래 따옴표 안에 발급받으신 API Key를 꼭 다시 넣어주세요!
