@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 # 💡 여기에 배경색과 글자색을 바꾸는 스타일 코드를 추가합니다!
-\st.markdown("""
+st.markdown("""
     <style>
     /* 🌐 구글 폰트 적용 */
     @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
